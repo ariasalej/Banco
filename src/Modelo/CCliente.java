@@ -13,10 +13,9 @@ public class CCliente {
     public String nombre;
     public String cuenta;
     public double saldo;
-    public int estado; // 0 si esta disponible y 1 si esta ocupado
-    
-    public CCliente(){
-        
+    public int estado; // 0 = disponible, 1 = ocupado
+
+    public CCliente() {
     }
 
     public CCliente(int id, String nombre, String cuenta, double saldo, int estado) {
@@ -27,6 +26,7 @@ public class CCliente {
         this.estado = estado;
     }
 
+    // Getters y setters
     public int getId() {
         return id;
     }
@@ -66,6 +66,4 @@ public class CCliente {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-    
-    
 }

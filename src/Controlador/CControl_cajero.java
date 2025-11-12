@@ -7,7 +7,7 @@ package Controlador;
 import Modelo.Cconexion;
 import java.sql.*;
 import Vista.Interfaz_Cajero1;
-import Vista.Interfaz;
+import Vista.*;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -66,7 +66,7 @@ public class CControl_cajero {
         String numCajero = vista.ID_Cajero.getText().trim();
 
         if (cuenta.isEmpty() || numCajero.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, "Por favor digite el número de cuenta y de cajero.");
+            JOptionPane.showMessageDialog(vista, "Por favor digite el numero de cuenta y de cajero.");
             return;
         }
 
@@ -97,7 +97,7 @@ public class CControl_cajero {
             ResultSet rsCajero = psCajero.executeQuery();
 
             if (!rsCajero.next()) {
-                JOptionPane.showMessageDialog(vista, " No existe un cajero con ese número.");
+                JOptionPane.showMessageDialog(vista, " No existe un cajero con ese numero.");
                 conexion.desconectar(con);
                 return;
             }
@@ -114,7 +114,7 @@ public class CControl_cajero {
             int estadoCajero = rsCajero.getInt("estado");
 
             if (estadoCliente == 1 || estadoCajero == 1) {
-                JOptionPane.showMessageDialog(vista, "️ Cliente o cajero están ocupados. Intente más tarde.");
+                JOptionPane.showMessageDialog(vista, "️ Cliente o cajero estan ocupados. Intente mas tarde.");
                 conexion.desconectar(con);
                 return;
             }
@@ -150,7 +150,7 @@ public class CControl_cajero {
     }
 
     public void cancelarOperacion() {
-        vista.Resultados.setText("Operación cancelada.");
+        vista.Resultados.setText("Operacion cancelada.");
         vista.Cuenta.setText("");
         vista.ID_Cajero.setText("");
         cuentaValidada = false;
@@ -172,12 +172,12 @@ public class CControl_cajero {
         try {
             monto = Integer.parseInt(texto);
         } catch (NumberFormatException e) {
-            vista.Resultados.setText("Monto inválido. Solo se permiten números.");
+            vista.Resultados.setText("Monto invalido. Solo se permiten numeros.");
             return;
         }
 
         if (monto < 10000 || monto > 1000000 || monto % 10000 != 0) {
-            vista.Resultados.setText("El monto debe ser entre $10.000 y $1.000.000, y múltiplo de $10.000.");
+            vista.Resultados.setText("El monto debe ser entre $10.000 y $1.000.000, y multiplo de $10.000.");
             return;
         }
 

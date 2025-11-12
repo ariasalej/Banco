@@ -20,12 +20,6 @@ public class CCajero {
 
     public CCajero() {
         billetes = new HashMap<>();
-        // Valores por defecto (puedes cambiar según tu tabla)
-        billetes.put(10000, 100);
-        billetes.put(20000, 100);
-        billetes.put(50000, 100);
-        billetes.put(100000, 100);
-        calcularSaldoTotal();
     }
 
     public CCajero(int id, Map<Integer, Integer> billetes, int estado) {
@@ -35,6 +29,7 @@ public class CCajero {
         calcularSaldoTotal();
     }
 
+    // Calcula el total de dinero disponible en el cajero
     public void calcularSaldoTotal() {
         saldoTotal = 0;
         for (Map.Entry<Integer, Integer> entry : billetes.entrySet()) {
@@ -42,6 +37,7 @@ public class CCajero {
         }
     }
 
+    // Getters y setters
     public double getSaldoTotal() {
         return saldoTotal;
     }
@@ -70,5 +66,4 @@ public class CCajero {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-
 }

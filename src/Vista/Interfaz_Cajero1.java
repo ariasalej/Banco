@@ -16,18 +16,8 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
     /**
      * Creates new form Pantalla
      */
-    HashMap<Integer, Integer> billetes = new HashMap<>();
-
     public Interfaz_Cajero1() {
-        
-    initComponents();
-
-        billetes.put(10000, 100);
-        billetes.put(20000, 100);
-        billetes.put(50000, 100);
-        billetes.put(100000, 100);
-
-        llenarTabla(billetes);
+        initComponents();
     }
 
     public void llenarTabla(HashMap<Integer, Integer> billetes) {
@@ -35,61 +25,11 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
         modelo.setRowCount(0); // Limpiar tabla
 
         for (Integer valor : billetes.keySet()) {
+
             int cantidad = billetes.get(valor);
             int total = valor * cantidad;
             modelo.addRow(new Object[]{"$" + valor, cantidad, "$" + total});
         }
-    }
-
-    public HashMap<Integer, Integer> generarDistribucion(int monto) {
-        HashMap<Integer, Integer> entrega = new HashMap<>();
-        int[] denominaciones = {100000, 50000, 20000, 10000};
-
-        // Reglas especiales
-        if (monto == 50000) {
-            if (billetes.getOrDefault(20000, 0) >= 2 && billetes.getOrDefault(10000, 0) >= 1) {
-                entrega.put(20000, 2);
-                entrega.put(10000, 1);
-                return entrega;
-            }
-        } else if (monto == 100000) {
-            if (billetes.getOrDefault(50000, 0) >= 1
-                    && billetes.getOrDefault(20000, 0) >= 2
-                    && billetes.getOrDefault(10000, 0) >= 1) {
-                entrega.put(50000, 1);
-                entrega.put(20000, 2);
-                entrega.put(10000, 1);
-                return entrega;
-            }
-        } else if (monto > 100000) {
-            if (billetes.getOrDefault(50000, 0) >= 1
-                    && billetes.getOrDefault(20000, 0) >= 2
-                    && billetes.getOrDefault(10000, 0) >= 1) {
-                entrega.put(50000, 1);
-                entrega.put(20000, 2);
-                entrega.put(10000, 1);
-                monto -= (50000 + 2 * 20000 + 10000);
-            }
-        }
-
-        // Distribucion
-        for (int valor : denominaciones) {
-            int disponibles = billetes.getOrDefault(valor, 0);
-            int necesarios = monto / valor;
-            int usados = Math.min(necesarios, disponibles);
-
-            if (usados > 0) {
-                entrega.put(valor, entrega.getOrDefault(valor, 0) + usados);
-                monto -= usados * valor;
-            }
-        }
-
-        // Si no se pudo completar el monto, retorno null
-        if (monto > 0) {
-            return null;
-        }
-
-        return entrega;
     }
 
     /**
@@ -121,6 +61,10 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
         corregir = new javax.swing.JButton();
         Cancelar = new javax.swing.JButton();
         Validar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        Cuenta = new javax.swing.JTextField();
+        ID_Cajero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -253,6 +197,22 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Cuenta:");
+
+        jLabel2.setText("ID Cajero:");
+
+        Cuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CuentaActionPerformed(evt);
+            }
+        });
+
+        ID_Cajero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ID_CajeroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -261,7 +221,16 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(44, 44, 44)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ID_Cajero, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(num4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,29 +249,36 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
                                 .addComponent(num9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(43, 43, 43)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(corregir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(Retirar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Borrar))
-                                .addComponent(corregir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(Borrar)))
+                            .addGap(29, 29, 29)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(Cancelar)
+                                .addComponent(Validar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(111, 111, 111)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(Cancelar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(Validar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(149, Short.MAX_VALUE))
+                        .addGap(169, 169, 169)))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(60, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(Cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(ID_Cajero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(4, 4, 4)
@@ -343,126 +319,76 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void num1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num1ActionPerformed
-        Resultados.setText(Resultados.getText() + "1");
+      
     }//GEN-LAST:event_num1ActionPerformed
 
     private void num2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num2ActionPerformed
-        Resultados.setText(Resultados.getText() + "2");
+       
     }//GEN-LAST:event_num2ActionPerformed
 
     private void num3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num3ActionPerformed
-        Resultados.setText(Resultados.getText() + "3");
+        
     }//GEN-LAST:event_num3ActionPerformed
 
     private void num4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num4ActionPerformed
-        Resultados.setText(Resultados.getText() + "4");
+        
     }//GEN-LAST:event_num4ActionPerformed
 
     private void num5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num5ActionPerformed
-        Resultados.setText(Resultados.getText() + "5");
+      
     }//GEN-LAST:event_num5ActionPerformed
 
     private void num6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num6ActionPerformed
-        Resultados.setText(Resultados.getText() + "6");
+      
     }//GEN-LAST:event_num6ActionPerformed
 
     private void num7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num7ActionPerformed
-        Resultados.setText(Resultados.getText() + "7");
+     
     }//GEN-LAST:event_num7ActionPerformed
 
     private void num8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num8ActionPerformed
-        Resultados.setText(Resultados.getText() + "8");
+        
     }//GEN-LAST:event_num8ActionPerformed
 
     private void num9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num9ActionPerformed
-        Resultados.setText(Resultados.getText() + "9");
+        
     }//GEN-LAST:event_num9ActionPerformed
 
     private void num0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_num0ActionPerformed
-        Resultados.setText(Resultados.getText() + "0");
+       
     }//GEN-LAST:event_num0ActionPerformed
 
     private void RetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetirarActionPerformed
-        String texto = Resultados.getText().trim().replaceAll("[^\\d]", "");
-        if (texto.isEmpty()) {
-            Resultados.setText("Por favor digita un monto.");
-            return;
-        }
-
-        int monto;
-        try {
-            monto = Integer.parseInt(texto);
-        } catch (NumberFormatException e) {
-            Resultados.setText("Monto invalido. Solo se permiten numeros.");
-            return;
-        }
-
-        // Validaciones básicas
-        if (monto < 10000 || monto > 1000000 || monto % 10000 != 0) {
-            Resultados.setText("El monto debe ser entre $10.000 y $1.000.000, y multiplo de $10.000.");
-            return;
-        }
-
-        // Generar distribución de billetes
-        HashMap<Integer, Integer> entrega = generarDistribucion(monto);
-
-        if (entrega == null) {
-            Resultados.setText("Lo sentimos, no hay suficientes billetes para completar el retiro. :(");
-            return;
-        }
-
-        // Validar disponibilidad antes de descontar
-        for (int valor : entrega.keySet()) {
-            int usados = entrega.get(valor);
-            int disponibles = billetes.getOrDefault(valor, 0);
-
-            if (usados > disponibles) {
-                Resultados.setText("Error: no hay suficientes billetes de $" + valor);
-                return;
-            }
-
-            billetes.put(valor, disponibles - usados);
-        }
-
-        // Mostrar resultado
-        StringBuilder mensaje = new StringBuilder("El retiro fue exitoso:\n");
-        int[] denominaciones = {100000, 50000, 20000, 10000};
-        for (int valor : denominaciones) {
-            if (entrega.containsKey(valor)) {
-                mensaje.append(entrega.get(valor)).append(" billetes de $").append(valor).append("\n");
-            }
-        }
-        Resultados.setText(mensaje.toString());
-
-        // Actualizar tabla
-        llenarTabla(billetes);
-
 
     }//GEN-LAST:event_RetirarActionPerformed
 
     private void BorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BorrarActionPerformed
-        Resultados.setText("");
+      
     }//GEN-LAST:event_BorrarActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
-        System.exit(0);
+
     }//GEN-LAST:event_SalirActionPerformed
 
     private void corregirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_corregirActionPerformed
-        String textoActual = Resultados.getText();
-        if (!textoActual.isEmpty()) {
-            String nuevoTexto = textoActual.substring(0, textoActual.length() - 1);
-            Resultados.setText(nuevoTexto);
-        }
+      
     }//GEN-LAST:event_corregirActionPerformed
 
     private void ValidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValidarActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_ValidarActionPerformed
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void CuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CuentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CuentaActionPerformed
+
+    private void ID_CajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ID_CajeroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ID_CajeroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,12 +429,16 @@ public class Interfaz_Cajero1 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton Borrar;
     public javax.swing.JButton Cancelar;
+    public javax.swing.JTextField Cuenta;
+    public javax.swing.JTextField ID_Cajero;
     public javax.swing.JTextArea Resultados;
     public javax.swing.JButton Retirar;
     public javax.swing.JButton Salir;
     public javax.swing.JTable Tabla;
     public javax.swing.JButton Validar;
     public javax.swing.JButton corregir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JButton num0;
