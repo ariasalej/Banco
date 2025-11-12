@@ -109,7 +109,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_CajeroActionPerformed
 
     private void AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminActionPerformed
-        new Interfaz_Admin().setVisible(true);
+        new Interfaz_Admin1().setVisible(true);
         dispose();
     }//GEN-LAST:event_AdminActionPerformed
 
