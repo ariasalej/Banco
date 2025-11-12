@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import Controlador.CControl_cajero;
+
 /**
  *
  * @author Alejo
@@ -104,12 +106,15 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CajeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CajeroActionPerformed
-       new Interfaz_Cajero1().setVisible(true);
-       dispose();
+        Vista.Interfaz_Cajero1 vistaCajero = new Vista.Interfaz_Cajero1();
+        Controlador.CControl_cajero controlCajero = new CControl_cajero(vistaCajero);
+        vistaCajero.setVisible(true);
+        dispose();
     }//GEN-LAST:event_CajeroActionPerformed
 
     private void AdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminActionPerformed
-        new Interfaz_Admin1().setVisible(true);
+        Vista.Interfaz_Admin1 vistaAdmin = new Vista.Interfaz_Admin1();
+        vistaAdmin.setVisible(true);
         dispose();
     }//GEN-LAST:event_AdminActionPerformed
 

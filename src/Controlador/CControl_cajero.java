@@ -36,6 +36,7 @@ public class CControl_cajero {
 
     public void inicializarEventos() {
         // Números
+        vista.num0.addActionListener(e -> agregarNumero("0"));
         vista.num1.addActionListener(e -> agregarNumero("1"));
         vista.num2.addActionListener(e -> agregarNumero("2"));
         vista.num3.addActionListener(e -> agregarNumero("3"));
