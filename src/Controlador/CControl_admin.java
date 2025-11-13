@@ -15,8 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Alejo
  */
 public class CControl_admin {
-    // === MÉTODO PARA LISTAR CLIENTES ===
-
+   // === MÉTODO PARA LISTAR CLIENTES ===
     public void listarClientes(JTable tabla) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
@@ -26,6 +25,7 @@ public class CControl_admin {
         modelo.addColumn("Ciudad");
         modelo.addColumn("Cuenta");
         modelo.addColumn("Saldo");
+        modelo.addColumn("Estado");
 
         Cconexion conexion = new Cconexion();
         Connection con = conexion.conectar();
@@ -62,7 +62,7 @@ public class CControl_admin {
         Connection con = conexion.conectar();
 
         try {
-            String sql = "INSERT INTO clientes (nombre, apellido, telefono, ciudad, ncuenta, saldo) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO clientes (nombre, apellido, telefono, ciudad, ncuenta, saldo, estado) VALUES (?, ?, ?, ?, ?, ?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, nombre);
             ps.setString(2, apellido);
@@ -70,6 +70,7 @@ public class CControl_admin {
             ps.setString(4, ciudad);
             ps.setString(5, cuenta);
             ps.setDouble(6, saldo);
+            ps.setInt(7, 0);//para el estado
             ps.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Cliente agregado correctamente.");

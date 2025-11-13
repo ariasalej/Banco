@@ -63,10 +63,10 @@ public class CControl_cajero {
 
 
     public void validarCuentaYCajero() {
-        String cuenta = vista.Cuenta.getText().trim();
+        String ncuenta = vista.Cuenta.getText().trim();
         String numCajero = vista.ID_Cajero.getText().trim();
 
-        if (cuenta.isEmpty() || numCajero.isEmpty()) {
+        if (ncuenta.isEmpty() || numCajero.isEmpty()) {
             JOptionPane.showMessageDialog(vista, "Por favor digite el numero de cuenta y de cajero.");
             return;
         }
@@ -81,9 +81,9 @@ public class CControl_cajero {
 
         try {
             // 1️⃣ Verificar si existe el cliente
-            String sqlCliente = "SELECT * FROM clientes WHERE cuenta = ?";
+            String sqlCliente = "SELECT * FROM clientes WHERE ncuenta = ?";
             PreparedStatement psCliente = con.prepareStatement(sqlCliente);
-            psCliente.setString(1, cuenta);
+            psCliente.setString(1, ncuenta);
             ResultSet rsCliente = psCliente.executeQuery();
 
             if (!rsCliente.next()) {
@@ -121,8 +121,8 @@ public class CControl_cajero {
             }
 
             // Marcar como "ocupados" temporalmente
-            PreparedStatement psUpdateCliente = con.prepareStatement("UPDATE clientes SET estado = 1 WHERE cuenta = ?");
-            psUpdateCliente.setString(1, cuenta);
+            PreparedStatement psUpdateCliente = con.prepareStatement("UPDATE clientes SET estado = 1 WHERE ncuenta = ?");
+            psUpdateCliente.setString(1, ncuenta);
             psUpdateCliente.executeUpdate();
 
             PreparedStatement psUpdateCajero = con.prepareStatement("UPDATE cajeros SET estado = 1 WHERE id = ?");
